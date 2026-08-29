@@ -15,20 +15,31 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
+
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Override
-    public UsuarioDto guardar (UsuarioDto usuarioDto){
-        Usuario usuario = new Usuario();
+    public UsuarioDto guardar(UsuarioDto usuarioDto) {
+        Usuario usuario;
+
+        if (usuarioDto.getRol() != null && usuarioDto.getRol().equalsIgnoreCase("ADMIN")) {
+            usuario = new UsuarioAdmin();
+            usuario.setRol("ADMIN");
+        } else {
+            usuario = new Usuario();
+            usuario.setRol(usuarioDto.getRol() == null ? "NORMAL" : usuarioDto.getRol().toUpperCase());
+        }
+
         usuario.setNombre(usuarioDto.getNombre());
         usuario.setEmail(usuarioDto.getEmail());
-        Usuario guardar =   usuarioRepository.save(usuario);
+
+        Usuario guardar = usuarioRepository.save(usuario);
         return new UsuarioDto(guardar);
     }
 
     @Override
-    public List<UsuarioDto> listar(){
+    public List<UsuarioDto> listar() {
         return usuarioRepository.findAll()
                 .stream()
                 .map(u -> new UsuarioDto(u))
@@ -36,16 +47,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public List<UsuarioDto> listarActivos(){
+    public List<UsuarioDto> listarActivos() {
         return usuarioRepository.listarActivos();
     }
 
     @Override
-    public UsuarioDto guardarAdmin (UsuarioDto usuarioDto){
-        Usuario usuario = new UsuarioAdmin();
-        usuario.setNombre(usuarioDto.getNombre());
-        usuario.setEmail(usuarioDto.getEmail());
-        Usuario guardar =   usuarioRepository.save(usuario);
-        return new UsuarioDto(guardar);
+    public UsuarioDto guardarAdmin(UsuarioDto usuarioDto) {
+        return null;
     }
 }
