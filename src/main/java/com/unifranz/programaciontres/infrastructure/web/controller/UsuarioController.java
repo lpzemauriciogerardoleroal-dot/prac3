@@ -1,39 +1,49 @@
-package com.unifranz.programaciontres.infrastructure.web.controller;
+package com.unifranz.programaciontres.infrastructure.controller;
 
 import com.unifranz.programaciontres.application.dto.UsuarioDto;
 import com.unifranz.programaciontres.application.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<UsuarioDto> guardar (@RequestBody UsuarioDto usuarioDto){
-        UsuarioDto usuario = usuarioService.guardar(usuarioDto);
-        return ResponseEntity.ok(usuario);
+    public ResponseEntity<UsuarioDto> crear(@RequestBody UsuarioDto usuarioDto) {
+        return ResponseEntity.ok(usuarioService.guardar(usuarioDto));
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioDto>> listarUsuarios(){
+    public ResponseEntity<List<UsuarioDto>> listarTodos() {
         return ResponseEntity.ok(usuarioService.listar());
     }
 
-    @GetMapping("/listarUsuarios")
-    public ResponseEntity<List<UsuarioDto>> listarUsuariosActivos(){
+    @GetMapping("/activos")
+    public ResponseEntity<List<UsuarioDto>> listarActivos() {
         return ResponseEntity.ok(usuarioService.listarActivos());
     }
 
-    @PostMapping("/guardarAdmin")
-    public ResponseEntity<UsuarioDto> guardarAdmin (@RequestBody UsuarioDto usuarioDto){
-        UsuarioDto usuario = usuarioService.guardarAdmin(usuarioDto);
-        return ResponseEntity.ok(usuario);
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioDto> actualizar(@PathVariable Long id, @RequestBody UsuarioDto usuarioDto) {
+        return ResponseEntity.ok(usuarioService.actualizar(id, usuarioDto));
+    }
+
+    @DeleteMapping("/fisico/{id}")
+    public ResponseEntity<Void> eliminarFisico(@PathVariable Long id) {
+        usuarioService.eliminarFisico(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/logico/{id}")
+    public ResponseEntity<Void> eliminarLogico(@PathVariable Long id) {
+        usuarioService.eliminarLogico(id);
+        return ResponseEntity.noContent().build();
     }
 }
