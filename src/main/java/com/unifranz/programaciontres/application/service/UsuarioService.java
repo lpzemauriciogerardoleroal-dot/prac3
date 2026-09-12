@@ -1,11 +1,3 @@
-package com.unifranz.programaciontres.application.service;
-
-import com.unifranz.programaciontres.application.dto.UsuarioDto;
-
-import java.util.List;
-
-public interface UsuarioService {
-
     UsuarioDto registrar(UsuarioDto usuarioDto);
 
     List<UsuarioDto> obtenerTodos();

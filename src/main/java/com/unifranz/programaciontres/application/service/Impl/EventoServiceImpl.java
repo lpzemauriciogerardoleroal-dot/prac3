@@ -10,25 +10,17 @@ import java.util.Map;
 public class EventoServiceImpl implements EventoService {
 
     @Override
-    public Map<String, Object> validarAcceso (int edad, boolean pago){
-        boolean puedeEntrar;
-        String motivo;
+    public Map<String, Object> validarAcceso(int edad, boolean pago) {
+        Map<String, Object> respuesta = new HashMap<>();
 
-        if (edad < 18){
-            puedeEntrar = false;
-            motivo = "es menor de edad";
-        } else if (!pago) {
-           puedeEntrar = false;
-           motivo = "No Pago";
+        if (edad >= 18 && pago) {
+            respuesta.put("mensaje", "Acceso permitido");
+            respuesta.put("estado", true);
         } else {
-            puedeEntrar = true;
-            motivo=" si esta permitido";
+            respuesta.put("mensaje", "Acceso denegado");
+            respuesta.put("estado", false);
         }
-        Map<String, Object> salida = new HashMap<>();
-        salida.put("puedeEntrar", puedeEntrar);
-        salida.put("motivo", motivo);
 
-        return salida;
+        return respuesta;
     }
-
 }
