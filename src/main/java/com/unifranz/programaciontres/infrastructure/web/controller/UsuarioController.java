@@ -1,4 +1,4 @@
-package com.unifranz.programaciontres.infrastructure.controller;
+package com.unifranz.programaciontres.infrastructure.web.controller;
 
 import com.unifranz.programaciontres.application.dto.UsuarioDto;
 import com.unifranz.programaciontres.application.service.UsuarioService;
@@ -17,33 +17,33 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<UsuarioDto> crear(@RequestBody UsuarioDto usuarioDto) {
-        return ResponseEntity.ok(usuarioService.guardar(usuarioDto));
+        return ResponseEntity.ok(usuarioService.registrar(usuarioDto));
     }
 
     @GetMapping
     public ResponseEntity<List<UsuarioDto>> listarTodos() {
-        return ResponseEntity.ok(usuarioService.listar());
+        return ResponseEntity.ok(usuarioService.obtenerTodos());
     }
 
     @GetMapping("/activos")
     public ResponseEntity<List<UsuarioDto>> listarActivos() {
-        return ResponseEntity.ok(usuarioService.listarActivos());
+        return ResponseEntity.ok(usuarioService.obtenerActivos());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDto> actualizar(@PathVariable Long id, @RequestBody UsuarioDto usuarioDto) {
-        return ResponseEntity.ok(usuarioService.actualizar(id, usuarioDto));
+        return ResponseEntity.ok(usuarioService.modificar(id, usuarioDto));
     }
 
     @DeleteMapping("/fisico/{id}")
     public ResponseEntity<Void> eliminarFisico(@PathVariable Long id) {
-        usuarioService.eliminarFisico(id);
+        usuarioService.borrarFisico(id);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/logico/{id}")
     public ResponseEntity<Void> eliminarLogico(@PathVariable Long id) {
-        usuarioService.eliminarLogico(id);
+        usuarioService.borrarLogico(id);
         return ResponseEntity.noContent().build();
     }
 }

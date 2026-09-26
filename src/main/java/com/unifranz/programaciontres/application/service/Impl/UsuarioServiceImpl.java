@@ -18,7 +18,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    public UsuarioDto guardar(UsuarioDto usuarioDto) {
+    public UsuarioDto registrar(UsuarioDto usuarioDto) {
         Usuario usuario;
 
         if (usuarioDto.getRol() != null && usuarioDto.getRol().equalsIgnoreCase("ADMIN")) {
@@ -37,7 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public List<UsuarioDto> listar() {
+    public List<UsuarioDto> obtenerTodos() {
         return usuarioRepository.findAll()
                 .stream()
                 .map(UsuarioDto::new)
@@ -45,7 +45,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public List<UsuarioDto> listarActivos() {
+    public List<UsuarioDto> obtenerActivos() {
         return usuarioRepository.findByEliminadoFalse()
                 .stream()
                 .map(UsuarioDto::new)
@@ -53,12 +53,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioDto guardarAdmin(UsuarioDto usuarioDto) {
-        return guardar(usuarioDto);
+    public UsuarioDto registrarAdministrador(UsuarioDto usuarioDto) {
+        return registrar(usuarioDto);
     }
 
     @Override
-    public UsuarioDto actualizar(Long id, UsuarioDto usuarioDto) {
+    public UsuarioDto modificar(Long id, UsuarioDto usuarioDto) {
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -74,12 +74,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void eliminarFisico(Long id) {
+    public void borrarFisico(Long id) {
         usuarioRepository.deleteById(id);
     }
 
     @Override
-    public void eliminarLogico(Long id) {
+    public void borrarLogico(Long id) {
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
